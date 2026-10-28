@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مراجعة الدراسات الإسلامية - الصف الخامس الابتدائي</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Font: Cairo for Arabic typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Cairo', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #f8fafc;
+        }
+        .correct-glow {
+            border-color: #22c55e !important;
+            background-color: #f0fdf4 !important;
+        }
+        .incorrect-glow {
+            border-color: #ef4444 !important;
+            background-color: #fef2f2 !important;
+        }
+    </style>
+</head>
+<body class="min-h-screen text-slate-800 pb-16">
+
+    <!-- Header / Branding Banner -->
+    <header class="bg-gradient-to-r from-emerald-800 via-teal-900 to-emerald-950 text-white shadow-xl py-6 px-4 mb-8">
+        <div class="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+            <!-- School / Ministry Badges / Logos -->
+            <div class="flex items-center gap-3 flex-wrap justify-center">
+                <div class="bg-white/10 backdrop-blur-md px-3 py-2 rounded-xl text-xs font-bold border border-white/20 flex items-center gap-2">
+                    <i class="fa-solid fa-award text-amber-400 text-lg"></i>
+                    <span>معتمدة من Cognia</span>
+                </div>
+                <div class="bg-white/10 backdrop-blur-md px-3 py-2 rounded-xl text-xs font-bold border border-white/20 text-center">
+                    <span>Imperial Int. School</span>
+                </div>
+                <div class="bg-white/10 backdrop-blur-md px-3 py-2 rounded-xl text-xs font-bold border border-white/20 text-center">
+                    <span>مدرسة الفخامة العالمية</span>
+                </div>
+                <div class="bg-white/10 backdrop-blur-md px-3 py-2 rounded-xl text-xs font-bold border border-white/20 flex items-center gap-2">
+                    <i class="fa-solid fa-book-open text-emerald-300 text-lg"></i>
+                    <span>وزارة التعليم</span>
+                </div>
+            </div>
+
+            <div class="text-center md:text-left">
+                <span class="bg-emerald-500/30 text-emerald-200 text-xs px-3 py-1 rounded-full font-semibold border border-emerald-400/30">الفصل الدراسي الأول</span>
+            </div>
+        </div>
+
+        <div class="max-w-4xl mx-auto text-center mt-6">
+            <h1 class="text-3xl md:text-4xl font-black tracking-wide text-white mb-2">مراجعة الدراسات الإسلامية</h1>
+            <p class="text-emerald-200 text-sm md:text-base font-semibold">الصف الخامس الابتدائي - الفترة الأولى</p>
+        </div>
+    </header>
+
+    <!-- Main Exam Container -->
+    <main class="max-w-4xl mx-auto px-4">
+        
+        <!-- Student Info Card -->
+        <section class="bg-white shadow-md rounded-2xl p-6 mb-8 border border-slate-100">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label for="studentName" class="block text-sm font-bold text-slate-700 mb-2">اسم الطالب:</label>
+                    <input type="text" id="studentName" placeholder="أدخل اسمك الثلاثي هنا..." class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition font-medium">
+                </div>
+                <div>
+                    <label for="examDate" class="block text-sm font-bold text-slate-700 mb-2">التاريخ:</label>
+                    <input type="date" id="examDate" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition font-medium">
+                </div>
+            </div>
+        </section>
+
+        <!-- Score Banner (Hidden initially) -->
+        <div id="scoreCard" class="hidden mb-8 p-6 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-lg text-center transform transition-all duration-500">
+            <h3 class="text-2xl font-black mb-1" id="scoreTitle">نتيجة الاختبار</h3>
+            <p class="text-lg font-semibold" id="scoreText">لقد حصلت على <span id="finalScore" class="font-black underline text-yellow-300">0</span> من <span id="totalScore">34</span></p>
+            <p id="feedbackMessage" class="text-sm mt-2 text-emerald-100"></p>
+        </div>
+
+        <form id="examForm" onsubmit="event.preventDefault(); gradeExam();">
+
+            <!-- Section 1: Multiple Choice -->
+            <section class="bg-white shadow-md rounded-2xl p-6 md:p-8 mb-8 border border-slate-100">
+                <div class="flex items-center gap-3 border-b border-slate-100 pb-4 mb-6">
+                    <span class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-lg">١</span>
+                    <h2 class="text-xl font-extrabold text-slate-800">أولاً: اختر الإجابة الصحيحة من بين الأقواس:</h2>
+                </div>
+
+                <div class="space-y-6">
+                    <!-- Q1 -->
+                    <div class="question-block p-4 rounded-xl bg-slate-50 border border-slate-200" data-q="1" data-ans="all">
+                        <p class="font-bold text-slate-800 mb-3">1. المراد بالعلم:</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q1" value="God" class="text-emerald-600 focus:ring-emerald-500"> معرفة الله تعالى
+                            </label>
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q1" value="Prophet" class="text-emerald-600 focus:ring-emerald-500"> النبي صلى الله عليه وسلم
+                            </label>
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q1" value="Islam" class="text-emerald-600 focus:ring-emerald-500"> دين الإسلام
+                            </label>
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q1" value="all" class="text-emerald-600 focus:ring-emerald-500"> جميع ما سبق
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Q2 -->
+                    <div class="question-block p-4 rounded-xl bg-slate-50 border border-slate-200" data-q="2" data-ans="sadiq">
+                        <p class="font-bold text-slate-800 mb-3">2. علمت أن الكذب حرام فيجب أن أكون ....</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q2" value="sadiq" class="text-emerald-600 focus:ring-emerald-500"> صادقاً
+                            </label>
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q2" value="amin" class="text-emerald-600 focus:ring-emerald-500"> أميناً
+                            </label>
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q2" value="kazib" class="text-emerald-600 focus:ring-emerald-500"> كاذباً
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Q3 -->
+                    <div class="question-block p-4 rounded-xl bg-slate-50 border border-slate-200" data-q="3" data-ans="ayn">
+                        <p class="font-bold text-slate-800 mb-3">3. أحكام الصلوات الخمس:</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q3" value="ayn" class="text-emerald-600 focus:ring-emerald-500"> فرض عين
+                            </label>
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q3" value="kifayah" class="text-emerald-600 focus:ring-emerald-500"> فرض كفاية
+                            </label>
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q3" value="mustahab" class="text-emerald-600 focus:ring-emerald-500"> مستحب
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Q4 -->
+                    <div class="question-block p-4 rounded-xl bg-slate-50 border border-slate-200" data-q="4" data-ans="mutahhir">
+                        <p class="font-bold text-slate-800 mb-3">4. من سنن الأذان:</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q4" value="mutahhir" class="text-emerald-600 focus:ring-emerald-500"> أن يكون المؤذن متطهراً
+                            </label>
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q4" value="aqil" class="text-emerald-600 focus:ring-emerald-500"> أن يكون المؤذن عاقلاً
+                            </label>
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q4" value="waqt" class="text-emerald-600 focus:ring-emerald-500"> أن يكون الأذان بعد دخول الوقت
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Q5 -->
+                    <div class="question-block p-4 rounded-xl bg-slate-50 border border-slate-200" data-q="5" data-ans="wasakh">
+                        <p class="font-bold text-slate-800 mb-3">5. معنى الدرن في حديث أبو هريرة:</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q5" value="wasakh" class="text-emerald-600 focus:ring-emerald-500"> الوسخ
+                            </label>
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q5" value="shirk" class="text-emerald-600 focus:ring-emerald-500"> الشرك
+                            </label>
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q5" value="sihr" class="text-emerald-600 focus:ring-emerald-500"> السحر
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Q6 -->
+                    <div class="question-block p-4 rounded-xl bg-slate-50 border border-slate-200" data-q="6" data-ans="ma'bood">
+                        <p class="font-bold text-slate-800 mb-3">6. معنى لا إله إلا الله:</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q6" value="ma'bood" class="text-emerald-600 focus:ring-emerald-500"> لا معبود بحق إلا الله
+                            </label>
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q6" value="raziq" class="text-emerald-600 focus:ring-emerald-500"> لا رازق إلا الله
+                            </label>
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q6" value="khaliq" class="text-emerald-600 focus:ring-emerald-500"> لا خالق إلا الله
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Q7 -->
+                    <div class="question-block p-4 rounded-xl bg-slate-50 border border-slate-200" data-q="7" data-ans="rijal">
+                        <p class="font-bold text-slate-800 mb-3">7. الأذان فرض كفاية على:</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q7" value="rijal" class="text-emerald-600 focus:ring-emerald-500"> الرجال
+                            </label>
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q7" value="nisa" class="text-emerald-600 focus:ring-emerald-500"> النساء
+                            </label>
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q7" value="jamia" class="text-emerald-600 focus:ring-emerald-500"> على الجميع
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Q8 -->
+                    <div class="question-block p-4 rounded-xl bg-slate-50 border border-slate-200" data-q="8" data-ans="15">
+                        <p class="font-bold text-slate-800 mb-3">8. عدد جمل الأذان:</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q8" value="15" class="text-emerald-600 focus:ring-emerald-500"> 15 جملة
+                            </label>
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q8" value="10" class="text-emerald-600 focus:ring-emerald-500"> 10 جمل
+                            </label>
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q8" value="9" class="text-emerald-600 focus:ring-emerald-500"> 9 جمل
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Q9 -->
+                    <div class="question-block p-4 rounded-xl bg-slate-50 border border-slate-200" data-q="9" data-ans="sunan">
+                        <p class="font-bold text-slate-800 mb-3">9. هي التي تستحب في الأذان ويثاب فاعلها ولا يبطل الأذان بتركها:</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q9" value="sunan" class="text-emerald-600 focus:ring-emerald-500"> سنن
+                            </label>
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q9" value="wajibat" class="text-emerald-600 focus:ring-emerald-500"> واجبات
+                            </label>
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q9" value="arkan" class="text-emerald-600 focus:ring-emerald-500"> أركان
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Q10 -->
+                    <div class="question-block p-4 rounded-xl bg-slate-50 border border-slate-200" data-q="10" data-ans="tawheed">
+                        <p class="font-bold text-slate-800 mb-3">10. الدعوة التامة هي:</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q10" value="tawheed" class="text-emerald-600 focus:ring-emerald-500"> دعوة التوحيد التي رفع المؤذن بها صوته
+                            </label>
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q10" value="shafaah" class="text-emerald-600 focus:ring-emerald-500"> مقام الشفاعة العظمى
+                            </label>
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q10" value="qiyama" class="text-emerald-600 focus:ring-emerald-500"> يوم القيامة
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Q11 -->
+                    <div class="question-block p-4 rounded-xl bg-slate-50 border border-slate-200" data-q="11" data-ans="11">
+                        <p class="font-bold text-slate-800 mb-3">11. عدد جمل الإقامة:</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q11" value="11" class="text-emerald-600 focus:ring-emerald-500"> 11 جملة
+                            </label>
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q11" value="12" class="text-emerald-600 focus:ring-emerald-500"> 12 جملة
+                            </label>
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q11" value="13" class="text-emerald-600 focus:ring-emerald-500"> 13 جملة
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Q12 -->
+                    <div class="question-block p-4 rounded-xl bg-slate-50 border border-slate-200" data-q="12" data-ans="8">
+                        <p class="font-bold text-slate-800 mb-3">12. عدد أبواب الجنة:</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q12" value="8" class="text-emerald-600 focus:ring-emerald-500"> 8 أبواب
+                            </label>
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q12" value="9" class="text-emerald-600 focus:ring-emerald-500"> 9 أبواب
+                            </label>
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q12" value="10" class="text-emerald-600 focus:ring-emerald-500"> 10 أبواب
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Q13 -->
+                    <div class="question-block p-4 rounded-xl bg-slate-50 border border-slate-200" data-q="13" data-ans="tatwwu'">
+                        <p class="font-bold text-slate-800 mb-3">13. المراد بالسنن الرواتب:</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q13" value="tatwwu'" class="text-emerald-600 focus:ring-emerald-500"> صلوات يتطوع بها قبل الفريضة وبعدها
+                            </label>
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q13" value="all_fard" class="text-emerald-600 focus:ring-emerald-500"> جميع الصلوات المفروضة
+                            </label>
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q13" value="fajr" class="text-emerald-600 focus:ring-emerald-500"> صلاة الفجر
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Q14 -->
+                    <div class="question-block p-4 rounded-xl bg-slate-50 border border-slate-200" data-q="14" data-ans="juma">
+                        <p class="font-bold text-slate-800 mb-3">14. أفضل أيام الأسبوع يوم:</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q14" value="juma" class="text-emerald-600 focus:ring-emerald-500"> الجمعة
+                            </label>
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q14" value="khamis" class="text-emerald-600 focus:ring-emerald-500"> الخميس
+                            </label>
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q14" value="ithnayn" class="text-emerald-600 focus:ring-emerald-500"> الاثنين
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Q15 -->
+                    <div class="question-block p-4 rounded-xl bg-slate-50 border border-slate-200" data-q="15" data-ans="itmmam">
+                        <p class="font-bold text-slate-800 mb-3">15. معنى يسبغ الوضوء:</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q15" value="itmmam" class="text-emerald-600 focus:ring-emerald-500"> يتم الوضوء ويكمله فيوصله مواضعه
+                            </label>
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q15" value="3times" class="text-emerald-600 focus:ring-emerald-500"> يغسل الأعضاء أكثر من ثلاث مرات
+                            </label>
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q15" value="remove" class="text-emerald-600 focus:ring-emerald-500"> يزيل ما على الأعضاء من الأوساخ
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Q16 -->
+                    <div class="question-block p-4 rounded-xl bg-slate-50 border border-slate-200" data-q="16" data-ans="sunnah">
+                        <p class="font-bold text-slate-800 mb-3">16. الاغتسال يوم الجمعة:</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q16" value="sunnah" class="text-emerald-600 focus:ring-emerald-500"> سنة
+                            </label>
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q16" value="wajib" class="text-emerald-600 focus:ring-emerald-500"> واجب
+                            </label>
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q16" value="fard" class="text-emerald-600 focus:ring-emerald-500"> فرض
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Q17 -->
+                    <div class="question-block p-4 rounded-xl bg-slate-50 border border-slate-200" data-q="17" data-ans="usbu'">
+                        <p class="font-bold text-slate-800 mb-3">17. صلاة الجمعة تكفر خطايا:</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q17" value="usbu'" class="text-emerald-600 focus:ring-emerald-500"> الأسبوع
+                            </label>
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q17" value="shahr" class="text-emerald-600 focus:ring-emerald-500"> الشهر
+                            </label>
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q17" value="sana" class="text-emerald-600 focus:ring-emerald-500"> السنة
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Q18 -->
+                    <div class="question-block p-4 rounded-xl bg-slate-50 border border-slate-200" data-q="18" data-ans="salah">
+                        <p class="font-bold text-slate-800 mb-3">18. كان النبي صلى الله عليه وسلم إذا أصابه هم أو حزن:</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q18" value="salah" class="text-emerald-600 focus:ring-emerald-500"> توجه إلى الصلاة
+                            </label>
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q18" value="ashab" class="text-emerald-600 focus:ring-emerald-500"> اشتكى إلى أحد أصحابه
+                            </label>
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q18" value="bayt" class="text-emerald-600 focus:ring-emerald-500"> بقي في بيته
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Q19 -->
+                    <div class="question-block p-4 rounded-xl bg-slate-50 border border-slate-200" data-q="19" data-ans="iqamah">
+                        <p class="font-bold text-slate-800 mb-3">19. الإعلان بالقيام إلى الصلاة هو تعريف:</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q19" value="iqamah" class="text-emerald-600 focus:ring-emerald-500"> الإقامة
+                            </label>
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q19" value="adhan" class="text-emerald-600 focus:ring-emerald-500"> الأذان
+                            </label>
+                            <label class="flex items-center gap-2 p-3 rounded-lg bg-white border border-slate-200 cursor-pointer hover:border-emerald-500 transition">
+                                <input type="radio" name="q19" value="takbeer" class="text-emerald-600 focus:ring-emerald-500"> تكبيرة الإحرام
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 2: Fill in the Blanks -->
+            <section class="bg-white shadow-md rounded-2xl p-6 md:p-8 mb-8 border border-slate-100">
+                <div class="flex items-center gap-3 border-b border-slate-100 pb-4 mb-6">
+                    <span class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-lg">٢</span>
+                    <h2 class="text-xl font-extrabold text-slate-800">ثانياً: أضع الكلمات التالية في الفراغ المناسب: <span class="text-emerald-600 font-medium text-sm">(الخفين - صلاة - اليسر)</span></h2>
+                </div>
+
+                <div class="space-y-4" id="blankSection">
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                        <p class="font-medium text-slate-800">1. كان النبي صلى الله عليه وسلم يتوضأ لكل 
+                            <select id="blank1" class="mx-2 px-3 py-2 rounded-lg border border-slate-300 bg-white font-bold text-emerald-700 focus:ring-2 focus:ring-emerald-500">
+                                <option value="">-- اختر الكلمة --</option>
+                                <option value="صلاة">صلاة</option>
+                                <option value="اليسر">اليسر</option>
+                                <option value="الخفين">الخفين</option>
+                            </select> ولو كان على طهارة.
+                        </p>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                        <p class="font-medium text-slate-800">2. كان النبي صلى الله عليه وسلم يحب 
+                            <select id="blank2" class="mx-2 px-3 py-2 rounded-lg border border-slate-300 bg-white font-bold text-emerald-700 focus:ring-2 focus:ring-emerald-500">
+                                <option value="">-- اختر الكلمة --</option>
+                                <option value="صلاة">صلاة</option>
+                                <option value="اليسر">اليسر</option>
+                                <option value="الخفين">الخفين</option>
+                            </select> في أموره كلها.
+                        </p>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                        <p class="font-medium text-slate-800">3. ومن تيسيره في الوضوء أنه كان صلى الله عليه وسلم يمسح على 
+                            <select id="blank3" class="mx-2 px-3 py-2 rounded-lg border border-slate-300 bg-white font-bold text-emerald-700 focus:ring-2 focus:ring-emerald-500">
+                                <option value="">-- اختر الكلمة --</option>
+                                <option value="صلاة">صلاة</option>
+                                <option value="اليسر">اليسر</option>
+                                <option value="الخفين">الخفين</option>
+                            </select> إذا لبسهما على طهارة.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 3: Classification Table -->
+            <section class="bg-white shadow-md rounded-2xl p-6 md:p-8 mb-8 border border-slate-100">
+                <div class="flex items-center gap-3 border-b border-slate-100 pb-4 mb-6">
+                    <span class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-lg">٣</span>
+                    <h2 class="text-xl font-extrabold text-slate-800">ثالثاً: صنف الصلوات الآتية (هل يشرع لها الإقامة أم لا؟):</h2>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-right border-collapse">
+                        <thead>
+                            <tr class="bg-slate-100 text-slate-700 text-sm font-bold">
+                                <th class="p-3 rounded-r-xl">م</th>
+                                <th class="p-3">اسم الصلاة</th>
+                                <th class="p-3 rounded-l-xl text-center">التصنيف</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableSection" class="divide-y divide-slate-100">
+                            <tr data-row="1" data-ans="yes">
+                                <td class="p-3 font-semibold text-slate-500">1</td>
+                                <td class="p-3 font-bold text-slate-800">الفجر</td>
+                                <td class="p-3 text-center">
+                                    <select class="px-4 py-2 rounded-lg border border-slate-300 font-semibold text-slate-700 focus:ring-2 focus:ring-emerald-500 table-select">
+                                        <option value="">-- اختر --</option>
+                                        <option value="yes">يشرع له الإقامة</option>
+                                        <option value="no">لا يشرع له الإقامة</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr data-row="2" data-ans="no">
+                                <td class="p-3 font-semibold text-slate-500">2</td>
+                                <td class="p-3 font-bold text-slate-800">الاستسقاء</td>
+                                <td class="p-3 text-center">
+                                    <select class="px-4 py-2 rounded-lg border border-slate-300 font-semibold text-slate-700 focus:ring-2 focus:ring-emerald-500 table-select">
+                                        <option value="">-- اختر --</option>
+                                        <option value="yes">يشرع له الإقامة</option>
+                                        <option value="no">لا يشرع له الإقامة</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr data-row="3" data-ans="no">
+                                <td class="p-3 font-semibold text-slate-500">3</td>
+                                <td class="p-3 font-bold text-slate-800">العيد</td>
+                                <td class="p-3 text-center">
+                                    <select class="px-4 py-2 rounded-lg border border-slate-300 font-semibold text-slate-700 focus:ring-2 focus:ring-emerald-500 table-select">
+                                        <option value="">-- اختر --</option>
+                                        <option value="yes">يشرع له الإقامة</option>
+                                        <option value="no">لا يشرع له الإقامة</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr data-row="4" data-ans="yes">
+                                <td class="p-3 font-semibold text-slate-500">4</td>
+                                <td class="p-3 font-bold text-slate-800">العصر</td>
+                                <td class="p-3 text-center">
+                                    <select class="px-4 py-2 rounded-lg border border-slate-300 font-semibold text-slate-700 focus:ring-2 focus:ring-emerald-500 table-select">
+                                        <option value="">-- اختر --</option>
+                                        <option value="yes">يشرع له الإقامة</option>
+                                        <option value="no">لا يشرع له الإقامة</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr data-row="5" data-ans="no">
+                                <td class="p-3 font-semibold text-slate-500">5</td>
+                                <td class="p-3 font-bold text-slate-800">الكسوف</td>
+                                <td class="p-3 text-center">
+                                    <select class="px-4 py-2 rounded-lg border border-slate-300 font-semibold text-slate-700 focus:ring-2 focus:ring-emerald-500 table-select">
+                                        <option value="">-- اختر --</option>
+                                        <option value="yes">يشرع له الإقامة</option>
+                                        <option value="no">لا يشرع له الإقامة</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr data-row="6" data-ans="yes">
+                                <td class="p-3 font-semibold text-slate-500">6</td>
+                                <td class="p-3 font-bold text-slate-800">الظهر</td>
+                                <td class="p-3 text-center">
+                                    <select class="px-4 py-2 rounded-lg border border-slate-300 font-semibold text-slate-700 focus:ring-2 focus:ring-emerald-500 table-select">
+                                        <option value="">-- اختر --</option>
+                                        <option value="yes">يشرع له الإقامة</option>
+                                        <option value="no">لا يشرع له الإقامة</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr data-row="7" data-ans="no">
+                                <td class="p-3 font-semibold text-slate-500">7</td>
+                                <td class="p-3 font-bold text-slate-800">الجنائز</td>
+                                <td class="p-3 text-center">
+                                    <select class="px-4 py-2 rounded-lg border border-slate-300 font-semibold text-slate-700 focus:ring-2 focus:ring-emerald-500 table-select">
+                                        <option value="">-- اختر --</option>
+                                        <option value="yes">يشرع له الإقامة</option>
+                                        <option value="no">لا يشرع له الإقامة</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr data-row="8" data-ans="no">
+                                <td class="p-3 font-semibold text-slate-500">8</td>
+                                <td class="p-3 font-bold text-slate-800">صلاة الوتر</td>
+                                <td class="p-3 text-center">
+                                    <select class="px-4 py-2 rounded-lg border border-slate-300 font-semibold text-slate-700 focus:ring-2 focus:ring-emerald-500 table-select">
+                                        <option value="">-- اختر --</option>
+                                        <option value="yes">يشرع له الإقامة</option>
+                                        <option value="no">لا يشرع له الإقامة</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Section 4: Matching Columns -->
+            <section class="bg-white shadow-md rounded-2xl p-6 md:p-8 mb-8 border border-slate-100">
+                <div class="flex items-center gap-3 border-b border-slate-100 pb-4 mb-6">
+                    <span class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-lg">٤</span>
+                    <h2 class="text-xl font-extrabold text-slate-800">رابعاً: صل ما في العمود (أ) بما يناسبه من العمود (ب):</h2>
+                </div>
+
+                <div class="space-y-4" id="matchingSection">
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 flex flex-col md:flex-row items-center justify-between gap-4 match-item" data-match="1" data-ans="b">
+                        <div class="font-bold text-slate-800 flex-1">1. الدعوة التامة</div>
+                        <div class="w-full md:w-1/2">
+                            <select class="w-full px-3 py-2 rounded-lg border border-slate-300 bg-white font-medium text-slate-700 focus:ring-2 focus:ring-emerald-500 match-select">
+                                <option value="">-- اختر المعنى المناسب --</option>
+                                <option value="a">أ. الصلاة الدائمة المستمرة وهي الصلوات التي دعي الناس إليها</option>
+                                <option value="b">ب. دعوة التوحيد التي رفع المؤذن بها صوته</option>
+                                <option value="c">ج. درجات الجنة</option>
+                                <option value="d">د. مقام الشفاعة العظمى</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 flex flex-col md:flex-row items-center justify-between gap-4 match-item" data-match="2" data-ans="a">
+                        <div class="font-bold text-slate-800 flex-1">2. الصلاة القائمة</div>
+                        <div class="w-full md:w-1/2">
+                            <select class="w-full px-3 py-2 rounded-lg border border-slate-300 bg-white font-medium text-slate-700 focus:ring-2 focus:ring-emerald-500 match-select">
+                                <option value="">-- اختر المعنى المناسب --</option>
+                                <option value="a">أ. الصلاة الدائمة المستمرة وهي الصلوات التي دعي الناس إليها</option>
+                                <option value="b">ب. دعوة التوحيد التي رفع المؤذن بها صوته</option>
+                                <option value="c">ج. درجات الجنة</option>
+                                <option value="d">د. مقام الشفاعة العظمى</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 flex flex-col md:flex-row items-center justify-between gap-4 match-item" data-match="3" data-ans="c">
+                        <div class="font-bold text-slate-800 flex-1">3. الوسيلة والفضيلة</div>
+                        <div class="w-full md:w-1/2">
+                            <select class="w-full px-3 py-2 rounded-lg border border-slate-300 bg-white font-medium text-slate-700 focus:ring-2 focus:ring-emerald-500 match-select">
+                                <option value="">-- اختر المعنى المناسب --</option>
+                                <option value="a">أ. الصلاة الدائمة المستمرة وهي الصلوات التي دعي الناس إليها</option>
+                                <option value="b">ب. دعوة التوحيد التي رفع المؤذن بها صوته</option>
+                                <option value="c">ج. درجات الجنة</option>
+                                <option value="d">د. مقام الشفاعة العظمى</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 flex flex-col md:flex-row items-center justify-between gap-4 match-item" data-match="4" data-ans="d">
+                        <div class="font-bold text-slate-800 flex-1">4. مقاماً محموداً</div>
+                        <div class="w-full md:w-1/2">
+                            <select class="w-full px-3 py-2 rounded-lg border border-slate-300 bg-white font-medium text-slate-700 focus:ring-2 focus:ring-emerald-500 match-select">
+                                <option value="">-- اختر المعنى المناسب --</option>
+                                <option value="a">أ. الصلاة الدائمة المستمرة وهي الصلوات التي دعي الناس إليها</option>
+                                <option value="b">ب. دعوة التوحيد التي رفع المؤذن بها صوته</option>
+                                <option value="c">ج. درجات الجنة</option>
+                                <option value="d">د. مقام الشفاعة العظمى</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
+                <button type="submit" class="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-emerald-600 to-teal-700 text-white font-black rounded-xl shadow-lg hover:from-emerald-700 hover:to-teal-800 transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2 text-lg">
+                    <i class="fa-solid fa-check-circle"></i> تصحيح الاختبار
+                </button>
+                <button type="button" onclick="resetExam()" class="w-full sm:w-auto px-8 py-4 bg-slate-200 text-slate-700 font-bold rounded-xl shadow hover:bg-slate-300 transition flex items-center justify-center gap-2 text-lg">
+                    <i class="fa-solid fa-rotate-right"></i> إعادة الاختبار
+                </button>
+                <button type="button" onclick="window.print()" class="w-full sm:w-auto px-8 py-4 bg-amber-500 text-white font-bold rounded-xl shadow hover:bg-amber-600 transition flex items-center justify-center gap-2 text-lg">
+                    <i class="fa-solid fa-print"></i> طباعة الاختبار
+                </button>
+            </div>
+        </form>
+
+        <!-- GitHub Instructions Card -->
+        <section class="bg-slate-900 text-white rounded-2xl p-6 md:p-8 shadow-xl mb-12">
+            <h3 class="text-xl font-bold mb-3 flex items-center gap-2 text-emerald-400">
+                <i class="fa-brands fa-github text-2xl"></i> كيفية رفع هذا الاختبار إلى مستودع GitHub كملف `index.html`:
+            </h3>
+            <ol class="list-decimal list-inside space-y-2 text-slate-300 text-sm md:text-base">
+                <li>انسخ كامل الكود البرمجي لهذه الصفحة (يمكنك النقر فوق زر النسخ أو حفظ الصفحة).</li>
+                <li>أنشئ مستودعاً جديداً (Repository) على موقع <a href="https://github.com" target="_blank" class="text-emerald-400 underline">GitHub</a> وسمِّه مثلاً <code>islamic-studies-grade5</code> واجعله عاماً (Public).</li>
+                <li>أنشئ ملفاً جديداً في المستودع وسمِّه بالضبط <code class="bg-slate-800 px-2 py-1 rounded text-emerald-300">index.html</code>.</li>
+                <li>الصق كود HTML الكامل داخل هذا الملف واحفظ التغييرات (Commit changes).</li>
+                <li>فعّل ميزة <code class="bg-slate-800 px-2 py-1 rounded text-emerald-300">GitHub Pages</code> من إعدادات المستودع (Settings) ليصبح الاختبار متاحاً برابط مباشر للطلاب!</li>
+            </ol>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center text-slate-500 text-sm py-6 border-t border-slate-200">
+        <p>جميع الحقوق محفوظة © مراجعة الدراسات الإسلامية - الصف الخامس الابتدائي</p>
+    </footer>
+
+    <!-- JavaScript for Grading Logic -->
+    <script>
+        function gradeExam() {
+            let score = 0;
+            const totalQuestions = 34; // 19 MCQ + 3 blanks + 8 table rows + 4 matching
+
+            // 1. Grade Section 1 (MCQ)
+            const mcqAnswers = {
+                '1': 'all',
+                '2': 'sadiq',
+                '3': 'ayn',
+                '4': 'mutahhir',
+                '5': 'wasakh',
+                '6': "ma'bood",
+                '7': 'rijal',
+                '8': '15',
+                '9': 'sunan',
+                '10': 'tawheed',
+                '11': '11',
+                '12': '8',
+                '13': "tatwwu'",
+                '14': 'juma',
+                '15': 'itmmam',
+                '16': 'sunnah',
+                '17': "usbu'",
+                '18': 'salah',
+                '19': 'iqamah'
+            };
+
+            for (let q in mcqAnswers) {
+                const block = document.querySelector(`.question-block[data-q="${q}"]`);
+                const selected = block.querySelector(`input[name="q${q}"]:checked`);
+                
+                block.classList.remove('correct-glow', 'incorrect-glow');
+                if (selected && selected.value === mcqAnswers[q]) {
+                    score++;
+                    block.classList.add('correct-glow');
+                } else {
+                    block.classList.add('incorrect-glow');
+                }
+            }
+
+            // 2. Grade Section 2 (Blanks)
+            const blankAnswers = { 'blank1': 'صلاة', 'blank2': 'اليسر', 'blank3': 'الخفين' };
+            for (let id in blankAnswers) {
+                const select = document.getElementById(id);
+                select.classList.remove('border-emerald-500', 'border-red-500', 'bg-emerald-50', 'bg-red-50');
+                if (select.value === blankAnswers[id]) {
+                    score++;
+                    select.classList.add('border-emerald-500', 'bg-emerald-50');
+                } else {
+                    select.classList.add('border-red-500', 'bg-red-50');
+                }
+            }
+
+            // 3. Grade Section 3 (Table)
+            const tableRows = document.querySelectorAll('#tableSection tr');
+            tableRows.forEach(row => {
+                const correct = row.getAttribute('data-ans');
+                const select = row.querySelector('.table-select');
+                select.classList.remove('border-emerald-500', 'border-red-500', 'bg-emerald-50', 'bg-red-50');
+                if (select.value === correct) {
+                    score++;
+                    select.classList.add('border-emerald-500', 'bg-emerald-50');
+                } else {
+                    select.classList.add('border-red-500', 'bg-red-50');
+                }
+            });
+
+            // 4. Grade Section 4 (Matching)
+            const matchItems = document.querySelectorAll('.match-item');
+            matchItems.forEach(item => {
+                const correct = item.getAttribute('data-ans');
+                const select = item.querySelector('.match-select');
+                select.classList.remove('border-emerald-500', 'border-red-500', 'bg-emerald-50', 'bg-red-50');
+                if (select.value === correct) {
+                    score++;
+                    select.classList.add('border-emerald-500', 'bg-emerald-50');
+                } else {
+                    select.classList.add('border-red-500', 'bg-red-50');
+                }
+            });
+
+            // Display Score
+            const scoreCard = document.getElementById('scoreCard');
+            const finalScoreEl = document.getElementById('finalScore');
+            const feedbackMessage = document.getElementById('feedbackMessage');
+
+            scoreCard.classList.remove('hidden');
+            finalScoreEl.textContent = score;
+
+            if (score === totalQuestions) {
+                feedbackMessage.textContent = 'ما شاء الله تبارك الله! علامة كاملة امتياز ممتاز! 🌟';
+            } else if (score >= totalQuestions * 0.8) {
+                feedbackMessage.textContent = 'أحسنت! نتيجة ممتازة جداً، بارك الله فيك. 👍';
+            } else if (score >= totalQuestions * 0.5) {
+                feedbackMessage.textContent = 'جيد، يمكنك المراجعة مرة أخرى لتحقيق الدرجة الكاملة. 📚';
+            } else {
+                feedbackMessage.textContent = 'تحتاج إلى إعادة مراجعة الدرس جيداً وحل الاختبار مرة أخرى. 💪';
+            }
+
+            // Scroll to score banner smoothly
+            scoreCard.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function resetExam() {
+            document.getElementById('examForm').reset();
+            document.getElementById('scoreCard').classList.add('hidden');
+            document.querySelectorAll('.question-block').forEach(b => b.classList.remove('correct-glow', 'incorrect-glow'));
+            document.querySelectorAll('select').forEach(s => s.classList.remove('border-emerald-500', 'border-red-500', 'bg-emerald-50', 'bg-red-50'));
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
